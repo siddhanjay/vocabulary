@@ -165,7 +165,7 @@ class Vocabulary(object):
         :param phrase: word for which meaning is to be found
         :param source_lang: Defaults to : "en"
         :param dest_lang: Defaults to : "en" For eg: "fr" for french
-        :returns: returns a json object as str, False if invalid phrase
+        :returns: returns a json object as str, None if invalid phrase
         """
         base_url = Vocabulary.__get_api_link("glosbe")
         url = base_url.format(word=phrase, source_lang=source_lang, dest_lang=dest_lang)
@@ -175,13 +175,13 @@ class Vocabulary(object):
             try:
                 tuc_content = json_obj["tuc"]       ## "tuc_content" is a "list"
             except KeyError:
-                return False
+                return None
             '''get meanings'''
             meanings_list = Vocabulary.__parse_content(tuc_content, "meanings")
             # return meanings_list
             return json.dumps(meanings_list)
         else:
-            return False
+            return None
 
     @staticmethod
     def synonym(phrase, source_lang="en", dest_lang="en"):
@@ -192,7 +192,7 @@ class Vocabulary(object):
         :param phrase:  word for which synonym is to be found
         :param source_lang: Defaults to : "en"
         :param dest_lang: Defaults to : "en"
-        :returns: returns a json object as str, False if invalid phrase
+        :returns: returns a json object as str, None if invalid phrase
         """
         base_url = Vocabulary.__get_api_link("glosbe")
         url = base_url.format(word=phrase, source_lang=source_lang, dest_lang=dest_lang)
@@ -201,16 +201,16 @@ class Vocabulary(object):
             try :
                 tuc_content = json_obj["tuc"]       ## "tuc_content" is a "list"
             except KeyError:
-                return False
+                return None
             synonyms_list = Vocabulary.__parse_content(tuc_content, "phrase")
             if synonyms_list:
                 # return synonyms_list
                 return json.dumps(synonyms_list)
             else:
-                return False
+                return None
 
         else:
-            return False
+            return None
 
         ## TO-DO:
         ## if this gives me no results, will query "bighugelabs"
@@ -229,7 +229,7 @@ class Vocabulary(object):
             :param phrase:  word for which translation is being found
             :param source_lang: Translation from language
             :param dest_lang: Translation to language
-            :returns: returns a json object as str, False if invalid phrase
+            :returns: returns a json object as str, None if invalid phrase
             """
             base_url = Vocabulary.__get_api_link("glosbe")
             url = base_url.format(word=phrase, source_lang=source_lang, dest_lang=dest_lang)
@@ -238,15 +238,15 @@ class Vocabulary(object):
                 try :
                     tuc_content = json_obj["tuc"]       ## "tuc_content" is a "list"
                 except KeyError:
-                    return False
+                    return None
                 translations_list = Vocabulary.__parse_content(tuc_content, "phrase")
                 if translations_list:
                     # return synonyms_list
                     return json.dumps(translations_list)
                 else:
-                    return False
+                    return None
             else:
-                return False
+                return None
 
 
 
@@ -265,7 +265,7 @@ class Vocabulary(object):
 
         :param phrase: word for which antonym is to be found
         :returns: returns a json object
-        :raises KeyError: returns False when no antonyms are found
+        :raises KeyError: returns None when no antonyms are found
         """
         base_url = Vocabulary.__get_api_link("bighugelabs")
         url = base_url.format(word=phrase)
@@ -287,7 +287,7 @@ class Vocabulary(object):
                     value = key_value["ant"]
                     dictionary["text"] = value
                 except KeyError:    ## if no antonyms are found!
-                    return False
+                    return None
 
             ##removing duplicates if any
             for key, value in dictionary.items():
@@ -298,7 +298,7 @@ class Vocabulary(object):
             # return json.dumps(final_dictionary)
             return final_dictionary
         else:
-            return False
+            return None
 
     @staticmethod
     def part_of_speech(phrase):
@@ -306,7 +306,7 @@ class Vocabulary(object):
         querrying Wordnik's API for knowing whether the word is a noun, adjective and the like
 
         :params phrase: word for which part_of_speech is to be found
-        :returns: returns a json object as str, False if invalid phrase
+        :returns: returns a json object as str, None if invalid phrase
         """
         ## We get a list object as a return value from the Wordnik API
         base_url = Vocabulary.__get_api_link("wordnik")
@@ -329,16 +329,16 @@ class Vocabulary(object):
                     return json.dumps(final_list)
                     # return final_list
                 else:
-                    return False
+                    return None
         else:
-            return False
+            return None
 
     @staticmethod
     def usage_example(phrase):
         """Takes the source phrase and queries it to the urbandictionary API
 
         :params phrase: word for which usage_example is to be found
-        :returns: returns a json object as str, False if invalid phrase
+        :returns: returns a json object as str, None if invalid phrase
         """
         base_url = Vocabulary.__get_api_link("urbandict")
         url = base_url.format(action="define", word=phrase)
@@ -354,9 +354,9 @@ class Vocabulary(object):
                 return json.dumps(Vocabulary.__clean_dict(word_examples))
                 # return Vocabulary.__clean_dict(word_examples)
             else:
-                return False
+                return None
         else:
-            return False
+            return None
 
     @staticmethod
     def pronunciation(phrase):
@@ -364,7 +364,7 @@ class Vocabulary(object):
         Gets the pronunciation from the Wordnik API
 
         :params phrase: word for which pronunciation is to be found
-        :returns: returns a list object, False if invalid phrase
+        :returns: returns a list object, None if invalid phrase
         """
         base_url = Vocabulary.__get_api_link("wordnik")
         url = base_url.format(word=phrase, action="pronunciations")
@@ -378,9 +378,9 @@ class Vocabulary(object):
             if sys.version_info[:2] <= (2, 7):  ## python2
                 return json_obj
             else:   ## python3
-                return json.loads(json.dumps(json_obj, ensure_ascii=False))
+                return json.loads(json.dumps(json_obj, ensure_ascii=None))
         else:
-            return False
+            return None
 
     @staticmethod
     def hyphenation(phrase):
@@ -388,14 +388,14 @@ class Vocabulary(object):
         Returns back the stress points in the "phrase" passed
 
         :param phrase: word for which hyphenation is to be found
-        :returns: returns a json object as str, False if invalid phrase
+        :returns: returns a json object as str, None if invalid phrase
         """
         base_url = Vocabulary.__get_api_link("wordnik")
-        url = base_url.format(word=phrase, action="hyphenation")
+        url = base_url.format(word=phrase, action="hyphenation")    
         hyphenation = {}
         json_obj = Vocabulary.__return_json(url)
         if json_obj:
             return json.dumps(json_obj)
             # return json_obj
         else:
-            return False
+            return None

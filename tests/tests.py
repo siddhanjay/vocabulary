@@ -36,7 +36,7 @@ class TestModule(unittest.TestCase):
 
     def test_meaning_not_valid_phrase(self):
         current_result = vb.meaning("sxsw")
-        self.assertFalse(current_result)
+        self.assertIsNone(current_result)
         
     def test_synonym_valid_phrase(self):
         current_result = vb.synonym("repudiate")
@@ -50,7 +50,7 @@ class TestModule(unittest.TestCase):
 
     def test_synonym_not_valid_phrase(self):
         current_result = vb.synonym("sxsw")
-        self.assertFalse(current_result)
+        self.assertIsNone(current_result)
         
     def test_antonym_valid_phrase_1(self):
         current_result = vb.antonym("love")
@@ -72,7 +72,7 @@ class TestModule(unittest.TestCase):
 
     def test_antonym_not_valid_phrase(self):
         current_result = vb.antonym("sxsw")
-        self.assertFalse(current_result)
+        self.assertIsNone(current_result)
 
     def test_partOfSpeech_valid_phrase_1(self):
         current_result = vb.part_of_speech("hello")
@@ -96,7 +96,7 @@ class TestModule(unittest.TestCase):
 
     def test_partOfSpeech_not_valid_phrase(self):
         current_result = vb.part_of_speech("sxsw")
-        self.assertFalse(current_result)
+        self.assertIsNone(current_result)
 
     def test_usageExamples_valid_phrase(self):
         current_result = vb.usage_example("hillock")
@@ -110,7 +110,7 @@ class TestModule(unittest.TestCase):
 
     def test_usageExamples_not_valid_phrase(self):
         current_result = vb.usage_example("lksj")
-        self.assertFalse(current_result)
+        self.assertIsNone(current_result)
 
     def test_pronunciation_valid_phrase(self):
         current_result = vb.pronunciation("hippopotamus")
@@ -123,7 +123,7 @@ class TestModule(unittest.TestCase):
 
     def test_pronunciation_not_valid_phrase(self):
         current_result = vb.pronunciation("lksj") # for non valid word
-        self.assertFalse(current_result)
+        self.assertIsNone(current_result)
 
     def test_hyphenation_valid_phrase(self):
         current_result = vb.hyphenation("hippopotamus")
@@ -137,7 +137,7 @@ class TestModule(unittest.TestCase):
 
     def test_hyphenation_not_valid_phrase(self):
         current_result = vb.hyphenation("sxsw")
-        self.assertFalse(current_result)
+        self.assertIsNone(current_result)
 
     def test_translate_valid_phrase(self):
         current_result = vb.translate("hummus", "en", "es")
@@ -151,7 +151,7 @@ class TestModule(unittest.TestCase):
 
     def test_translate_not_valid_phrase(self):
         current_result = vb.translate("asldkfj", "en", "ru")
-        self.assertEqual(current_result, False)
+        self.assertIsNone(current_result, False)
 
 if __name__ == "__main__":
     unittest.main()
